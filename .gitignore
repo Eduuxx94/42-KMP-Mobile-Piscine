@@ -1,0 +1,28 @@
+# ======================================
+# General system files
+# ======================================
+.DS_Store
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+.env
+
+# Node / JS / Web (if you have JS projects)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+
+# IDE/editor
+*.iml
+.idea/
+
+# Build / output folders
+build/
+out/
+bin/
+dist/
+release/
+debug/
