@@ -1,0 +1,48 @@
+# ======================================
+# Kotlin Multiplatform / Compose Multiplatform
+# ======================================
+*.klib
+*.kexe
+*.class
+*.jar
+*.war
+*.ear
+*.js.map
+*.wasm
+*.bin
+*.exe
+
+# Kotlin compiler caches
+.kotlin/
+.kotlinc/
+
+# Gradle
+.gradle/
+**/.gradle/
+local.properties
+gradle-app.setting
+
+# Gradle wrapper files (optional if you commit them manually)
+# gradlew
+# gradlew.bat
+!gradle/wrapper/gradle-wrapper.jar
+
+# Android / Jetpack Compose
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+
+# iOS / macOS / Xcode
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+xcuserdata/
+DerivedData/
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
