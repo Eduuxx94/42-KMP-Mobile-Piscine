@@ -1,3 +1,20 @@
+# Exercise 00 – A Basic Display
+
+**Objective:**
+- Create a simple app with a centered text and a button below it.
+- On button click, display `"Button pressed"` in the debug console.
+
+**Implementation Notes:**
+- Used `Column` with `Modifier.fillMaxSize()` and `verticalArrangement = Arrangement.Center` to center content vertically.
+- Added `Text` and `Button` Composables.
+- Debug output: `println("Button pressed")` on button click.
+- Ensured responsiveness by using `fillMaxWidth()` on components.
+
+**Result:**  
+A single page app with a centered text and clickable button, printing debug messages when pressed.
+
+---
+
 This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
 
 * [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.

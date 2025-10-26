@@ -1,3 +1,29 @@
+# Exercise 02 – More Buttons (Calculator UI)
+
+**Objective:**
+- Build a calculator UI with multiple buttons, two `TextField`s (expression and result), and an AppBar with the title `"Calculator"`.
+- Display `"0"` in both fields initially.
+- Buttons: `0-9`, `.`, `AC`, `C`, `=`, and operators `+`, `-`, `*`, `/`.
+- Debug feature: print pressed button in console.
+
+**Implementation Notes:**
+- Used `TopAppBar` for the title.
+- Used nested `Column` → `Row` structure for buttons, with `Modifier.weight(1f)` for equal sizing.
+- Applied `Modifier.clip(RoundedCornerShape(...))` to buttons and `Text` to get rounded corners.
+- Set `Text` color dynamically based on position to emulate operator and number differentiation.
+- `println` / `Log.d` used for multiplatform debug messages.
+- Had to handle platform differences: desktop default button elevation, web click effect, etc.
+
+**Problems Faced:**
+- `TopAppBar` text centering required custom `Column` with `fillMaxWidth()` and `horizontalAlignment = Alignment.CenterHorizontally`.
+- Compose Multiplatform buttons had slightly different defaults on Desktop vs Android.
+- Rounded clickable effect required `Modifier.clip` since `clickable` is square by default.
+
+**Result:**  
+A fully responsive calculator UI for all platforms with interactive buttons and debug logging for button presses.
+
+---
+
 This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
 
 * [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.

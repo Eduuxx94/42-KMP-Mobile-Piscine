@@ -1,3 +1,43 @@
+# Exercise 03 – It’s Alive! (Calculator Logic)
+
+**Objective:**
+- Implement calculator logic behind the UI.
+- Handle multiple operations, negative numbers, decimal numbers, clear (`AC`), and delete (`C`).
+
+**Implementation Notes:**
+- Created `commonMain` logic for parsing and evaluating expressions:
+    - `calculateExpression(expression: String): String` – main entry function.
+    - `tokenize()` – splits input into numbers and operators.
+    - `infixToRPN()` – converts infix expression to Reverse Polish Notation using operator precedence.
+    - `evaluateRPN()` – calculates the RPN result using a stack.
+- Decoupled logic from UI for multiplatform reusability.
+- Used `ArrayDeque` for stack operations.
+- Debugging: used my own multiplatform logging (`Log.i("Tag", "message")`).
+
+**Problems Faced:**
+- Handling consecutive operators and negative numbers during tokenization (`59-89+-20/6`).
+- Need for custom logging across platforms.
+- Ensuring correct precedence in infix to RPN conversion.
+- Desktop vs Android default UI differences (elevation, clickable ripple).
+
+**Result:**
+- Calculator correctly evaluates expressions like `"0+1.2-4/3*2-2+11"`.
+- Negative numbers, decimals, multi-operation expressions are supported.
+- UI remains responsive across Android, iOS, Desktop, and Web.
+- Debug output logs each button press and intermediate states.
+
+---
+
+## General Notes & Best Practices
+
+- **Separation of Concerns:** UI code (`Composable`) does not contain business logic. Logic resides in `commonMain`.
+- **State Management:** Use `remember { mutableStateOf(...) }` for reactive UI updates.
+- **Platform-Specific Differences:** Desktop, Web, and Mobile have slightly different defaults in Compose (e.g., elevation, clickable effect). Always test all targets.
+- **Logging:** Use my implementation of `Log` for multiplatform logging.
+- **Responsive Design:** Use `fillMaxWidth()`, `weight()`, `safeContentPadding()`, and alignment modifiers to ensure responsiveness.
+
+---
+
 This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
 
 * [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.

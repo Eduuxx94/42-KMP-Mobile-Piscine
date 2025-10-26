@@ -1,3 +1,17 @@
+# Exercise 01 – Say Hello to the World
+
+**Objective:**
+- Modify the app so that the text toggles between the initial value and `"Hello World!"` when the button is clicked.
+
+**Implementation Notes:**
+- Used `remember { mutableStateOf(...) }` to track text state.
+- Button `onClick` toggles between two strings.
+
+**Result:**  
+Button successfully toggles displayed text, demonstrating basic state management in Compose.
+
+---
+
 This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
 
 * [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.

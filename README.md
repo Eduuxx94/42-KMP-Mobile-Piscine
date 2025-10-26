@@ -1,5 +1,21 @@
 # Mobile 0 — Basics of Mobile Application
 
+This repository contains exercises from the Mobile-0 Piscine, implemented using **Kotlin Multiplatform (KMP)** and **Jetpack Compose Multiplatform**. The goal of these exercises is to understand basic UI elements, user interaction, and multiplatform logic.
+
+---
+
+## Project Structure
+
+- `mobileModule00/ex00` – Exercise 00: A basic display  
+- `mobileModule00/ex01` – Exercise 01: Say Hello to the World  
+- `mobileModule00/ex02` – Exercise 02: More Buttons / Calculator UI  
+- `mobileModule00/calculator_app` – Exercise 03: Full calculator with logic  
+
+Each exercise is independent and builds upon the previous one.  
+
+All shared logic resides in `commonMain` and UI code is implemented using Compose for multiplatform targets: Android, iOS, Web, Desktop.
+
+---
 ## 📘 Table of Contents
 
 - [I. Instructions](#i-instructions)
