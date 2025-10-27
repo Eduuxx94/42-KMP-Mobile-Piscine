@@ -1,106 +1,152 @@
-# Exercise 02 – More Buttons (Calculator UI)
+# Exercise 02 - More Buttons
 
-**Objective:**
-- Build a calculator UI with multiple buttons, two `TextField`s (expression and result), and an AppBar with the title `"Calculator"`.
-- Display `"0"` in both fields initially.
-- Buttons: `0-9`, `.`, `AC`, `C`, `=`, and operators `+`, `-`, `*`, `/`.
-- Debug feature: print pressed button in console.
+## Overview
+In this exercise, you will expand your calculator project by adding a more complete **UI layout** using **Jetpack Compose Multiplatform (KMP)**.  
+This exercise focuses on creating a clean and interactive **button grid** with a top bar and placeholders for the expression and result.
 
-**Implementation Notes:**
-- Used `TopAppBar` for the title.
-- Used nested `Column` → `Row` structure for buttons, with `Modifier.weight(1f)` for equal sizing.
-- Applied `Modifier.clip(RoundedCornerShape(...))` to buttons and `Text` to get rounded corners.
-- Set `Text` color dynamically based on position to emulate operator and number differentiation.
-- `println` / `Log.d` used for multiplatform debug messages.
-- Had to handle platform differences: desktop default button elevation, web click effect, etc.
-
-**Problems Faced:**
-- `TopAppBar` text centering required custom `Column` with `fillMaxWidth()` and `horizontalAlignment = Alignment.CenterHorizontally`.
-- Compose Multiplatform buttons had slightly different defaults on Desktop vs Android.
-- Rounded clickable effect required `Modifier.clip` since `clickable` is square by default.
-
-**Result:**  
-A fully responsive calculator UI for all platforms with interactive buttons and debug logging for button presses.
+Unlike the previous step, this one introduces **dynamic layouts** with loops, **click handling**, and **layout organization** using Compose's declarative approach.
 
 ---
 
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
+## 🧱 Code Structure
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-    - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-    - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-      For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-      the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-      Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-      folder is the appropriate location.
+### 1. Material Theme and Layout
+The entire app is wrapped in a `MaterialTheme`, which provides consistent UI styling across Android, iOS, and Desktop.
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+```kotlin
+MaterialTheme {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF25414a))
+    ) {
+        // AppBar
+        // Display Area
+        // Buttons Grid
+    }
+}
+```
 
-### Build and Run Android Application
-
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
-
-### Build and Run Desktop (JVM) Application
-
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:run
-  ```
-
-### Build and Run Web Application
-
-To build and run the development version of the web app, use the run configuration from the run widget
-in your IDE's toolbar or run it directly from the terminal:
-
-- for the Wasm target (faster, modern browsers):
-    - on macOS/Linux
-      ```shell
-      ./gradlew :composeApp:wasmJsBrowserDevelopmentRun
-      ```
-    - on Windows
-      ```shell
-      .\gradlew.bat :composeApp:wasmJsBrowserDevelopmentRun
-      ```
-- for the JS target (slower, supports older browsers):
-    - on macOS/Linux
-      ```shell
-      ./gradlew :composeApp:jsBrowserDevelopmentRun
-      ```
-    - on Windows
-      ```shell
-      .\gradlew.bat :composeApp:jsBrowserDevelopmentRun
-      ```
-
-### Build and Run iOS Application
-
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+- `Column`: vertically arranges the children.
+- `Modifier.fillMaxSize()`: expands the layout to fit the whole screen.
+- `Modifier.background(Color(...))`: defines the main background color.
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+## 🧮 TopAppBar and Display Section
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack
-channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+The **TopAppBar** defines a simple header with the title `"Calculator"`:
+
+```kotlin
+TopAppBar(
+    title = {
+        Box(Modifier.fillMaxWidth(), Alignment.Center) {
+            Text("Calculator", color = Color.White)
+        }
+    },
+    colors = TopAppBarDefaults.topAppBarColors(
+        containerColor = Color(0XFF528ba3),
+    ),
+)
+```
+
+Below it, a **display area** shows placeholders for the expression and result:
+
+```kotlin
+Column(
+    Modifier.fillMaxWidth()
+        .fillMaxHeight(0.45f)
+        .padding(8.dp),
+    horizontalAlignment = Alignment.End
+) {
+    Text("0", color = Color(0XFF528ba3), fontSize = 24.sp)
+    Text("0", color = Color(0XFF528ba3), fontSize = 24.sp)
+}
+```
+
+These will later be updated to show the user’s current input and result dynamically.
+
+---
+
+## 🔘 Buttons and Layout Grid
+
+The calculator’s buttons are stored in a list of lists:
+
+```kotlin
+val buttons = listOf(
+    listOf("7", "8", "9", "C", "AC"),
+    listOf("4", "5", "6", "+", "-"),
+    listOf("1", "2", "3", "*", "/"),
+    listOf("0", ".", "00", "=", ""),
+)
+```
+
+This makes it easy to loop through rows and create a structured grid dynamically.
+
+### `forEachIndexed`
+
+We use `forEachIndexed` to iterate through both **rows** and **columns**:
+
+```kotlin
+buttons.forEachIndexed { rowIndex, row ->
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        row.forEachIndexed { buttonIndex, button ->
+            Text(
+                text = button,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable(enabled = button.isNotEmpty()) {
+                        Log.i("I/Kotlin", "Button pressed: $button")
+                    }
+                    .weight(1f),
+                textAlign = TextAlign.Center,
+                color =
+                    if (buttonIndex < buttons.size - 1)
+                        Color(0xFF25414a)
+                    else if (rowIndex == 0)
+                        Color.Red.copy(alpha = 0.5F)
+                    else
+                        Color.White
+            )
+        }
+    }
+}
+```
+
+### Key points:
+- **`forEachIndexed`** gives both the index and value → useful for grid logic.
+- **`clip(RoundedCornerShape(12.dp))`** → rounds the button corners.
+- **`clickable`** → makes each `Text` element interactive.
+- **`weight(1f)`** → ensures all buttons share equal width.
+- **`Log.i`** → outputs which button was pressed to the debug console.
+
+---
+
+## 🧩 BottomAppBar
+
+A small `BottomAppBar` is added for balance and potential expansion:
+```kotlin
+BottomAppBar(modifier = Modifier.height(24.dp), containerColor = Color.Transparent) {}
+```
+Currently, it serves a visual purpose only.
+
+---
+
+## 🧠 Key Takeaways
+
+- **`forEachIndexed`** enables dynamic UI generation.
+- **Modifiers** control layout, color, padding, shape, and clickability.
+- **Jetpack Compose** declaratively describes the interface: the UI automatically updates based on state or logic.
+- The layout is **responsive**, adapting to screen orientation and size.
+- This structure prepares the project for adding real calculation logic in the next exercise.
+
+---
+
+✅ **Next Step:**  
+You will now implement the logic to evaluate mathematical expressions and update the display fields dynamically.
