@@ -7,8 +7,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.CalendarViewDay
+import androidx.compose.material.icons.filled.CalendarViewMonth
+import androidx.compose.material.icons.filled.CalendarViewWeek
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Today
+import androidx.compose.material.icons.filled.Weekend
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -54,13 +62,19 @@ fun App() {
         },
         bottomBar = {
             TabRow(selectedTabIndex = pagerState.currentPage, modifier = Modifier) {
-                for (index in 0 until pagerState.pageCount) {
-                    Tab(selected = index == pagerState.currentPage, modifier = Modifier.heightIn(min = 48.dp), onClick = {
+                for (page in 0 until pagerState.pageCount) {
+                    Tab(selected = page == pagerState.currentPage, modifier = Modifier.heightIn(min = 48.dp), onClick = {
                         scope.launch {
-                            pagerState.animateScrollToPage(index)
+                            pagerState.animateScrollToPage(page)
                         }
                     }) {
-                        Text(text = Page.entries[index].name)
+                        val icon = when (Page.entries[page]) {
+                            Page.Currently -> Icons.Filled.CalendarViewDay
+                            Page.Today -> Icons.Filled.CalendarToday
+                            Page.Weekly -> Icons.Filled.CalendarMonth
+                        }
+                        Icon(imageVector = icon, contentDescription = null)
+                        Text(text = Page.entries[page].name)
                     }
                 }
             }
