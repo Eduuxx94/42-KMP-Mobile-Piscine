@@ -1,0 +1,7 @@
+TEAM_ID=
+
+PRODUCT_NAME=weather_app
+PRODUCT_BUNDLE_IDENTIFIER=com.lisboa42.projects.weather_app.weather_app$(TEAM_ID)
+
+CURRENT_PROJECT_VERSION=1
+MARKETING_VERSION=1.0
